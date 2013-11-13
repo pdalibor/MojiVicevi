@@ -1,48 +1,89 @@
 <!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
 <html>
     <head>
-        <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <title>Moji Vicevi</title>
+        <title>MojiVicevi</title>
+        <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+        <link rel="stylesheet" href="css/jquery.mobile-1.3.2.min.css"/>
+        <link rel="stylesheet" href="http://example.gajotres.net/iscrollview/jquery.mobile.iscrollview.css"/>
+		<link rel="stylesheet" href="http://example.gajotres.net/iscrollview/jquery.mobile.iscrollview-pull.css"/>
+		<style>
+			.ui-content {
+				padding: 0 !important;
+			}
+ 
+			.ui-listview {
+				margin: 0 !important;
+			}
+ 
+			.example-wrapper, .example-wrapper div.iscroll-scroller {
+				width: 100% !important;
+			}
+		</style>
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+        <script src="js/jquery.mobile-1.3.2.min.js"></script>
+        <script src="http://example.gajotres.net/iscrollview/iscroll.js"></script>
+		<script src="http://example.gajotres.net/iscrollview/jquery.mobile.iscrollview.js"></script>
+		<script>
+			$(document).on('pageinit', '#home', function(){      
+				var url = 'http://api.themoviedb.org/3/',
+					mode = 'search/movie?query=',
+					movieName = '&query='+encodeURI('Batman'),        
+					key = '&api_key=470fd2ec8853e25d2f8d86f685d2270e';        
+ 
+				$.ajax({
+					url: url + mode + key + movieName ,
+					dataType: "jsonp",
+					async: true,
+					success: function (result) {
+						ajax.parseJSONP(result);
+					},
+					error: function (request,error) {
+						alert('Network error has occurred please try again!');
+					}
+				}); 
+					
+				$('#sadrzaj').text('Prva stranica, inicijalno najnoviji vicevi');
+			});
+ 
+			$(document).on('vclick', '#najnoviji', function(){  
+				$('#sadrzaj').text('Prva stranica, najnoviji vicevi');
+			});
+ 
+			$(document).on('vclick', '#viceviDana', function(){  
+				$('#sadrzaj').text('Druga stranica, viceviDana');
+			});
+			
+			$(document).on('vclick', '#najbolji', function(){  
+				$('#sadrzaj').text('Treca stranica, najbolji vicevi');
+			});
+ 
+				
+		</script>
     </head>
-    <body>
-		<div id="wrapper">
-		<div id="cool_buttons">
-			<p>
-				<a href="http://www.mojivicevi.com/najbolji-vicevi/" title="Najbolji vicevi" class="button-bevel orange"> <span aria-hidden="true" class="icon-love"></span>Najbolji vicevi</a>
-				<a href="http://www.mojivicevi.com/novi-vicevi/" title="Novi vicevi" class="button-bevel orange"> <span aria-hidden="true" class="icon-air"></span>Novi vicevi</a>
-				<a href="http://www.mojivicevi.com/vicevi-dana/" title="Vicevi dana" class="button-bevel orange"> <span aria-hidden="true" class="icon-like"></span>Vicevi Dana</a> 
-			</p>
-		</div>
+    <body>  
+		<div data-role="page" id="home">
+			<div data-role="header" data-id="foo1" data-position="fixed" data-theme="b" style="overflow:hidden;">
+				<h1>MojiVicevi</h1>    
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#" id="najnoviji">Najnoviji</a></li>
+						<li><a href="#" id="viceviDana">Vicevi dana</a></li>
+						<li><a href="#" id="najbolji">Najbolji</a></li>
+					</ul>
+				</div><!-- /navbar -->
+			</div><!-- /header --> 
+			<div data-role="content" id="sadrzajPage">
+				<div class="example-wrapper" data-iscroll>
+					<div data-role="content" id="sadrzaj">
+					f
+						<p>Page content goes here.</p>
+					</div><!-- /content -->
+				</div>
+			</div>
+			
+			
+		</div><!-- /home --> 
 		
-		
-			<script type="text/javascript" src="phonegap.js"></script>
-			<script type="text/javascript" src="js/index.js"></script>
-			<script type="text/javascript">
-				app.initialize();
-			</script>
-        
-        </div>
-        
     </body>
 </html>
