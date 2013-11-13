@@ -25,21 +25,16 @@
         <script src="http://example.gajotres.net/iscrollview/iscroll.js"></script>
 		<script src="http://example.gajotres.net/iscrollview/jquery.mobile.iscrollview.js"></script>
 		<script>
-			$(document).on('pageinit', '#home', function(){      
-				var url = 'http://api.themoviedb.org/3/',
-					mode = 'search/movie?query=',
-					movieName = '&query='+encodeURI('Batman'),        
-					key = '&api_key=470fd2ec8853e25d2f8d86f685d2270e';        
- 
+			$(document).on('pageinit', '#home', function(){
 				$.ajax({
-					url: url + mode + key + movieName ,
+					url: 'http://www.mojivicevi.com/vicevi_android.php?tab=2' ,
 					dataType: "jsonp",
 					async: true,
-					success: function (result) {
-						ajax.parseJSONP(result);
+					success: function (result) {						
+						localStorage.setItem("viceviDanaDb", JSON.stringify(result));
 					},
-					error: function (request,error) {
-						alert('Network error has occurred please try again!');
+					error: function (request,error) {					
+						//alert('Network error has occurred please try again!');
 					}
 				}); 
 					
@@ -50,8 +45,16 @@
 				$('#sadrzaj').text('Prva stranica, najnoviji vicevi');
 			});
  
-			$(document).on('vclick', '#viceviDana', function(){  
-				$('#sadrzaj').text('Druga stranica, viceviDana');
+			$(document).on('vclick', '#viceviDana', function(){ 
+				var viceviDanaJson = JSON.parse(localStorage.getItem('viceviDanaDb'));
+				var viceviDanaAll = '';
+				for (var i = 0, len = viceviDanaJson.length; i < len; ++i) {
+					var vicDana = viceviDanaJson[i];
+					var vicDanaTekst = vicDana.tekst;	
+					viceviDanaAll = viceviDanaAll.concat(vicDanaTekst);
+					viceviDanaAll = viceviDanaAll.concat('<br><br>------------------------------------<br><br>');				
+				}
+				$('#sadrzaj').html(viceviDanaAll);
 			});
 			
 			$(document).on('vclick', '#najbolji', function(){  
