@@ -17,7 +17,7 @@
 			}
  
 			.example-wrapper, .example-wrapper div.iscroll-scroller {
-				width: 100% !important;
+				width: 100% !important;				
 			}
 			
 			.entry-content { padding:0px 10px 10px 10px;}
@@ -35,6 +35,10 @@
 			padding: 0;
 			height: 0;
 			margin: 0;}
+			
+			p.naslov{color:#367fd8; font-size:1.0em;font-weight: bold;margin-bottom: -5px;}
+			
+			p.autor{color:#8080C0; font-size:0.8em;padding:0 0 0px 0;margin:0px;}
 			
 			.linija {border-bottom: 1px solid #CCC; padding-top: 10px;}
 		</style>
@@ -87,13 +91,20 @@
 					var vic = najnovijiJson[i];
 					var vicTekst = vic.tekst;
 					var vicNaslov = vic.naslov;
-					najnovijiAll = najnovijiAll.concat('<div class=\"entry-content\"><p><h2>');
+					najnovijiAll = najnovijiAll.concat('<div class=\"entry-content\"><p class=\"naslov\">');
 					najnovijiAll = najnovijiAll.concat(vicNaslov);
-					najnovijiAll = najnovijiAll.concat('</h2><p>');
+					najnovijiAll = najnovijiAll.concat('</p><p>');
 					najnovijiAll = najnovijiAll.concat(vicTekst);					
 					najnovijiAll = najnovijiAll.concat('</p><div class=\"clr linija\"></div></div>');				
 				}
 				$('#sadrzaj').html(najnovijiAll);
+			});
+			
+			
+			$(document).on('pagebeforeshow', '#home', function(){ 
+				$('[data-role="content"]').trigger('create');
+				$(".example-wrapper").iscrollview("refresh");
+				$(".example-wrapper").iscrollview("scrollTo", 0, 0, 0, false);
 			});
  
 			$(document).on('vclick', '#najnoviji', function(){  
@@ -101,11 +112,18 @@
 				var najnovijiAll = '';
 				for (var i = 0, len = najnovijiJson.length; i < len; ++i) {
 					var vic = najnovijiJson[i];
-					var vicTekst = vic.tekst;	
-					najnovijiAll = najnovijiAll.concat(vicTekst);
-					najnovijiAll = najnovijiAll.concat('<br><br>------------------------------------<br><br>');				
+					var vicTekst = vic.tekst;
+					var vicNaslov = vic.naslov;
+					najnovijiAll = najnovijiAll.concat('<div class=\"entry-content\"><p class=\"naslov\">');
+					najnovijiAll = najnovijiAll.concat(vicNaslov);
+					najnovijiAll = najnovijiAll.concat('</p><p>');
+					najnovijiAll = najnovijiAll.concat(vicTekst);					
+					najnovijiAll = najnovijiAll.concat('</p><div class=\"clr linija\"></div></div>');				
 				}
 				$('#sadrzaj').html(najnovijiAll);
+				$('[data-role="content"]').trigger('create');
+				$(".example-wrapper").iscrollview("refresh");
+				$(".example-wrapper").iscrollview("scrollTo", 0, 0, 0, false);
 			});
  
 			$(document).on('vclick', '#viceviDana', function(){ 
@@ -113,11 +131,21 @@
 				var viceviDanaAll = '';
 				for (var i = 0, len = viceviDanaJson.length; i < len; ++i) {
 					var vicDana = viceviDanaJson[i];
-					var vicDanaTekst = vicDana.tekst;	
-					viceviDanaAll = viceviDanaAll.concat(vicDanaTekst);
-					viceviDanaAll = viceviDanaAll.concat('<br><br>------------------------------------<br><br>');				
+					var vicTekst = vicDana.tekst;
+					var vicNaslov = vicDana.naslov;
+					var vicDatum = vicDana.datum;
+					viceviDanaAll = viceviDanaAll.concat('<div class=\"entry-content\"><p class=\"naslov\">');
+					viceviDanaAll = viceviDanaAll.concat(vicNaslov);
+					viceviDanaAll = viceviDanaAll.concat('</p><p class=\"autor\" style=\"padding-bottom:0px\">Vic dana za: <strong>');
+					viceviDanaAll = viceviDanaAll.concat(vicDatum);	
+					viceviDanaAll = viceviDanaAll.concat('</strong></p><p>');	
+					viceviDanaAll = viceviDanaAll.concat(vicTekst);					
+					viceviDanaAll = viceviDanaAll.concat('</p><div class=\"clr linija\"></div></div>');				
 				}
 				$('#sadrzaj').html(viceviDanaAll);
+				$('[data-role="content"]').trigger('create');
+				$(".example-wrapper").iscrollview("refresh");
+				$(".example-wrapper").iscrollview("scrollTo", 0, 0, 0, false);
 			});
 			
 			$(document).on('vclick', '#najbolji', function(){  
@@ -125,11 +153,18 @@
 				var najboljiAll = '';
 				for (var i = 0, len = najboljiJson.length; i < len; ++i) {
 					var vic = najboljiJson[i];
-					var vicTekst = vic.tekst;	
-					najboljiAll = najboljiAll.concat(vicTekst);
-					najboljiAll = najboljiAll.concat('<br><br>------------------------------------<br><br>');				
+					var vicTekst = vic.tekst;
+					var vicNaslov = vic.naslov;
+					najboljiAll = najboljiAll.concat('<div class=\"entry-content\"><p class=\"naslov\">');
+					najboljiAll = najboljiAll.concat(vicNaslov);
+					najboljiAll = najboljiAll.concat('</p><p>');
+					najboljiAll = najboljiAll.concat(vicTekst);					
+					najboljiAll = najboljiAll.concat('</p><div class=\"clr linija\"></div></div>');				
 				}
 				$('#sadrzaj').html(najboljiAll);
+				$('[data-role="content"]').trigger('create');
+				$(".example-wrapper").iscrollview("refresh");
+				$(".example-wrapper").iscrollview("scrollTo", 0, 0, 0, false);
 			});
  
 				
