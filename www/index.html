@@ -49,8 +49,13 @@
 		<script>
 			$(document).on('pageinit', '#home', function(){		
 				var currentTime = event.timeStamp;
-				var lastTimeObj = JSON.parse(localStorage.getItem("updateTime"));
-				var lastTime = lastTimeObj.timestamp;				
+				var lastTime = 0;
+				if (localStorage.getItem("updateTime") === null) {
+				  lastTime = 0;
+				}else{
+					var lastTimeObj = JSON.parse(localStorage.getItem("updateTime"));
+					var lastTime = lastTimeObj.timestamp;
+				}
 				var diff = currentTime - lastTime;
 				
 				if(diff > 18000000){
@@ -60,7 +65,22 @@
 						dataType: "jsonp",
 						async: true,
 						success: function (result) {						
-							localStorage.setItem("najnovijiDb", JSON.stringify(result));						
+							localStorage.setItem("najnovijiDb", JSON.stringify(result));	
+							
+							//Set initial page
+							var najnovijiJson = JSON.parse(localStorage.getItem('najnovijiDb'));
+							var najnovijiAll = '';
+							for (var i = 0, len = najnovijiJson.length; i < len; ++i) {
+								var vic = najnovijiJson[i];
+								var vicTekst = vic.tekst;
+								var vicNaslov = vic.naslov;
+								najnovijiAll = najnovijiAll.concat('<div class=\"entry-content\"><p class=\"naslov\">');
+								najnovijiAll = najnovijiAll.concat(vicNaslov);
+								najnovijiAll = najnovijiAll.concat('</p><p>');
+								najnovijiAll = najnovijiAll.concat(vicTekst);					
+								najnovijiAll = najnovijiAll.concat('</p><div class=\"clr linija\"></div></div>');				
+							}
+							$('#sadrzaj').html(najnovijiAll);
 						},
 						error: function (request,error) {
 							//alert('Network error has occurred please try again!');
@@ -93,20 +113,7 @@
 						}
 					});
 				}
-				//Set initial page
-				var najnovijiJson = JSON.parse(localStorage.getItem('najnovijiDb'));
-				var najnovijiAll = '';
-				for (var i = 0, len = najnovijiJson.length; i < len; ++i) {
-					var vic = najnovijiJson[i];
-					var vicTekst = vic.tekst;
-					var vicNaslov = vic.naslov;
-					najnovijiAll = najnovijiAll.concat('<div class=\"entry-content\"><p class=\"naslov\">');
-					najnovijiAll = najnovijiAll.concat(vicNaslov);
-					najnovijiAll = najnovijiAll.concat('</p><p>');
-					najnovijiAll = najnovijiAll.concat(vicTekst);					
-					najnovijiAll = najnovijiAll.concat('</p><div class=\"clr linija\"></div></div>');				
-				}
-				$('#sadrzaj').html(najnovijiAll);
+				
 			});
 			
 			
@@ -194,7 +201,7 @@
 			<div data-role="content" id="sadrzajPage">
 				<div class="example-wrapper" data-iscroll>
 					<div data-role="content" id="sadrzaj">					
-						<p>Morate biti spojeni na internet da skinete nove viceve!</p>
+						<p>Učitavam viceve sa www.mojivicevi.com. Molim sacekajte!</p>
 					</div><!-- /content -->
 				</div>
 			</div>
