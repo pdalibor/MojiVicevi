@@ -81,6 +81,9 @@
 								najnovijiAll = najnovijiAll.concat('</p><div class=\"clr linija\"></div></div>');				
 							}
 							$('#sadrzaj').html(najnovijiAll);
+							$('[data-role="content"]').trigger('create');
+							$(".example-wrapper").iscrollview("refresh");
+							$(".example-wrapper").iscrollview("scrollTo", 0, 0, 0, false);
 						},
 						error: function (request,error) {
 							//alert('Network error has occurred please try again!');
