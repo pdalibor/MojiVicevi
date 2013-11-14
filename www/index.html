@@ -5,8 +5,8 @@
         <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
 		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
         <link rel="stylesheet" href="css/jquery.mobile-1.3.2.min.css"/>
-        <link rel="stylesheet" href="http://example.gajotres.net/iscrollview/jquery.mobile.iscrollview.css"/>
-		<link rel="stylesheet" href="http://example.gajotres.net/iscrollview/jquery.mobile.iscrollview-pull.css"/>
+        <link rel="stylesheet" href="css/jquery.mobile.iscrollview.css"/>
+		<link rel="stylesheet" href="css/jquery.mobile.iscrollview-pull.css"/>
 		<style>
 			.ui-content {
 				padding: 0 !important;
@@ -42,48 +42,57 @@
 			
 			.linija {border-bottom: 1px solid #CCC; padding-top: 10px;}
 		</style>
-        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+        <script src="js/jquery-1.10.1.min.js"></script>
         <script src="js/jquery.mobile-1.3.2.min.js"></script>
-        <script src="http://example.gajotres.net/iscrollview/iscroll.js"></script>
-		<script src="http://example.gajotres.net/iscrollview/jquery.mobile.iscrollview.js"></script>
+        <script src="js/iscroll.js"></script>
+		<script src="js/jquery.mobile.iscrollview.js"></script>
 		<script>
-			$(document).on('pageinit', '#home', function(){
-				$.ajax({
-					url: 'http://www.mojivicevi.com/vicevi_android.php?tab=1' ,
-					dataType: "jsonp",
-					async: true,
-					success: function (result) {						
-						localStorage.setItem("najnovijiDb", JSON.stringify(result));
-					},
-					error: function (request,error) {					
-						//alert('Network error has occurred please try again!');
-					}
-				}); 
+			$(document).on('pageinit', '#home', function(){		
+				var currentTime = event.timeStamp;
+				var lastTimeObj = JSON.parse(localStorage.getItem("updateTime"));
+				var lastTime = lastTimeObj.timestamp;				
+				var diff = currentTime - lastTime;
 				
-				$.ajax({
-					url: 'http://www.mojivicevi.com/vicevi_android.php?tab=2' ,
-					dataType: "jsonp",
-					async: true,
-					success: function (result) {						
-						localStorage.setItem("viceviDanaDb", JSON.stringify(result));
-					},
-					error: function (request,error) {					
-						//alert('Network error has occurred please try again!');
-					}
-				}); 
-				
-				$.ajax({
-					url: 'http://www.mojivicevi.com/vicevi_android.php?tab=3' ,
-					dataType: "jsonp",
-					async: true,
-					success: function (result) {						
-						localStorage.setItem("najboljiDb", JSON.stringify(result));
-					},
-					error: function (request,error) {					
-						//alert('Network error has occurred please try again!');
-					}
-				});
+				if(diff > 18000000){
 					
+					$.ajax({
+						url: 'http://www.mojivicevi.com/vicevi_android.php?tab=1' ,
+						dataType: "jsonp",
+						async: true,
+						success: function (result) {						
+							localStorage.setItem("najnovijiDb", JSON.stringify(result));						
+						},
+						error: function (request,error) {
+							//alert('Network error has occurred please try again!');
+						}
+					}); 
+					
+					$.ajax({
+						url: 'http://www.mojivicevi.com/vicevi_android.php?tab=2' ,
+						dataType: "jsonp",
+						async: true,
+						success: function (result) {						
+							localStorage.setItem("viceviDanaDb", JSON.stringify(result));						
+						},
+						error: function (request,error) {					
+							//alert('Network error has occurred please try again!');
+						}
+					}); 
+					
+					$.ajax({
+						url: 'http://www.mojivicevi.com/vicevi_android.php?tab=3' ,
+						dataType: "jsonp",
+						async: true,
+						success: function (result) {						
+							localStorage.setItem("najboljiDb", JSON.stringify(result));
+							var updateTime = {value: "value", timestamp: event.timeStamp}
+							localStorage.setItem("updateTime", JSON.stringify(updateTime));
+						},
+						error: function (request,error) {					
+							//alert('Network error has occurred please try again!');
+						}
+					});
+				}
 				//Set initial page
 				var najnovijiJson = JSON.parse(localStorage.getItem('najnovijiDb'));
 				var najnovijiAll = '';
@@ -184,9 +193,8 @@
 			</div><!-- /header --> 
 			<div data-role="content" id="sadrzajPage">
 				<div class="example-wrapper" data-iscroll>
-					<div data-role="content" id="sadrzaj">
-					f
-						<p>Page content goes here.</p>
+					<div data-role="content" id="sadrzaj">					
+						<p>Morate biti spojeni na internet da skinete nove viceve!</p>
 					</div><!-- /content -->
 				</div>
 			</div>
