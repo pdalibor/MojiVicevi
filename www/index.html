@@ -112,6 +112,21 @@
 							//alert('Network error has occurred please try again!');
 						}
 					});
+				}else{
+					//Set initial page
+					var najnovijiJson = JSON.parse(localStorage.getItem('najnovijiDb'));
+					var najnovijiAll = '';
+					for (var i = 0, len = najnovijiJson.length; i < len; ++i) {
+						var vic = najnovijiJson[i];
+						var vicTekst = vic.tekst;
+						var vicNaslov = vic.naslov;
+						najnovijiAll = najnovijiAll.concat('<div class=\"entry-content\"><p class=\"naslov\">');
+						najnovijiAll = najnovijiAll.concat(vicNaslov);
+						najnovijiAll = najnovijiAll.concat('</p><p>');
+						najnovijiAll = najnovijiAll.concat(vicTekst);					
+						najnovijiAll = najnovijiAll.concat('</p><div class=\"clr linija\"></div></div>');				
+					}
+					$('#sadrzaj').html(najnovijiAll);
 				}
 				
 			});
