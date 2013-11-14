@@ -19,6 +19,24 @@
 			.example-wrapper, .example-wrapper div.iscroll-scroller {
 				width: 100% !important;
 			}
+			
+			.entry-content { padding:0px 10px 10px 10px;}
+			.entry-content h2{font-size:16px;color:#367fd8;}			
+			.entry-content p {
+				font-size:1.0em;
+				margin-bottom:15px;
+				line-height:165%;
+				color:#444;				
+				text-align:justify;
+			}		
+			
+			.clr{
+			clear: both;
+			padding: 0;
+			height: 0;
+			margin: 0;}
+			
+			.linija {border-bottom: 1px solid #CCC; padding-top: 10px;}
 		</style>
         <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
         <script src="js/jquery.mobile-1.3.2.min.js"></script>
@@ -26,6 +44,18 @@
 		<script src="http://example.gajotres.net/iscrollview/jquery.mobile.iscrollview.js"></script>
 		<script>
 			$(document).on('pageinit', '#home', function(){
+				$.ajax({
+					url: 'http://www.mojivicevi.com/vicevi_android.php?tab=1' ,
+					dataType: "jsonp",
+					async: true,
+					success: function (result) {						
+						localStorage.setItem("najnovijiDb", JSON.stringify(result));
+					},
+					error: function (request,error) {					
+						//alert('Network error has occurred please try again!');
+					}
+				}); 
+				
 				$.ajax({
 					url: 'http://www.mojivicevi.com/vicevi_android.php?tab=2' ,
 					dataType: "jsonp",
@@ -37,12 +67,45 @@
 						//alert('Network error has occurred please try again!');
 					}
 				}); 
+				
+				$.ajax({
+					url: 'http://www.mojivicevi.com/vicevi_android.php?tab=3' ,
+					dataType: "jsonp",
+					async: true,
+					success: function (result) {						
+						localStorage.setItem("najboljiDb", JSON.stringify(result));
+					},
+					error: function (request,error) {					
+						//alert('Network error has occurred please try again!');
+					}
+				});
 					
-				$('#sadrzaj').text('Prva stranica, inicijalno najnoviji vicevi');
+				//Set initial page
+				var najnovijiJson = JSON.parse(localStorage.getItem('najnovijiDb'));
+				var najnovijiAll = '';
+				for (var i = 0, len = najnovijiJson.length; i < len; ++i) {
+					var vic = najnovijiJson[i];
+					var vicTekst = vic.tekst;
+					var vicNaslov = vic.naslov;
+					najnovijiAll = najnovijiAll.concat('<div class=\"entry-content\"><p><h2>');
+					najnovijiAll = najnovijiAll.concat(vicNaslov);
+					najnovijiAll = najnovijiAll.concat('</h2><p>');
+					najnovijiAll = najnovijiAll.concat(vicTekst);					
+					najnovijiAll = najnovijiAll.concat('</p><div class=\"clr linija\"></div></div>');				
+				}
+				$('#sadrzaj').html(najnovijiAll);
 			});
  
 			$(document).on('vclick', '#najnoviji', function(){  
-				$('#sadrzaj').text('Prva stranica, najnoviji vicevi');
+				var najnovijiJson = JSON.parse(localStorage.getItem('najnovijiDb'));
+				var najnovijiAll = '';
+				for (var i = 0, len = najnovijiJson.length; i < len; ++i) {
+					var vic = najnovijiJson[i];
+					var vicTekst = vic.tekst;	
+					najnovijiAll = najnovijiAll.concat(vicTekst);
+					najnovijiAll = najnovijiAll.concat('<br><br>------------------------------------<br><br>');				
+				}
+				$('#sadrzaj').html(najnovijiAll);
 			});
  
 			$(document).on('vclick', '#viceviDana', function(){ 
@@ -58,7 +121,15 @@
 			});
 			
 			$(document).on('vclick', '#najbolji', function(){  
-				$('#sadrzaj').text('Treca stranica, najbolji vicevi');
+				var najboljiJson = JSON.parse(localStorage.getItem('najboljiDb'));
+				var najboljiAll = '';
+				for (var i = 0, len = najboljiJson.length; i < len; ++i) {
+					var vic = najboljiJson[i];
+					var vicTekst = vic.tekst;	
+					najboljiAll = najboljiAll.concat(vicTekst);
+					najboljiAll = najboljiAll.concat('<br><br>------------------------------------<br><br>');				
+				}
+				$('#sadrzaj').html(najboljiAll);
 			});
  
 				
