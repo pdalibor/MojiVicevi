@@ -47,7 +47,9 @@
         <script src="js/iscroll.js"></script>
 		<script src="js/jquery.mobile.iscrollview.js"></script>
 		<script>
-			$(document).on('pageinit', '#home', function(){		
+			$(document).on('pageinit', '#home', function(){	
+				$.support.cors = true;
+				$.mobile.allowCrossDomainPages = true;
 				var currentTime = event.timeStamp;
 				var lastTime = 0;
 				if (localStorage.getItem("updateTime") === null) {
@@ -62,8 +64,8 @@
 					
 					$.ajax({
 						url: 'http://www.mojivicevi.com/vicevi_android.php?tab=1' ,
-						dataType: "jsonp",
-						async: true,
+						type: "GET",
+						dataType: 'json',
 						success: function (result) {						
 							localStorage.setItem("najnovijiDb", JSON.stringify(result));	
 							
@@ -92,8 +94,8 @@
 					
 					$.ajax({
 						url: 'http://www.mojivicevi.com/vicevi_android.php?tab=2' ,
-						dataType: "jsonp",
-						async: true,
+						type: "GET",
+						dataType: 'json',
 						success: function (result) {						
 							localStorage.setItem("viceviDanaDb", JSON.stringify(result));						
 						},
@@ -104,8 +106,8 @@
 					
 					$.ajax({
 						url: 'http://www.mojivicevi.com/vicevi_android.php?tab=3' ,
-						dataType: "jsonp",
-						async: true,
+						type: "GET",
+						dataType: 'json',
 						success: function (result) {						
 							localStorage.setItem("najboljiDb", JSON.stringify(result));
 							var updateTime = {value: "value", timestamp: event.timeStamp}
