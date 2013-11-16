@@ -61,7 +61,7 @@
 				var diff = currentTime - lastTime;
 				
 				$('#test').text(currentTime.toString() + '-' + lastTime.toString());
-				if(diff > 18000000){
+				if(diff > 60){
 					
 					$.ajax({
 						url: 'http://www.mojivicevi.com/vicevi_android.php?tab=1' ,
