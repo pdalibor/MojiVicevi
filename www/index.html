@@ -59,7 +59,7 @@
 					var lastTime = lastTimeObj.timestamp;
 				}
 				var diff = currentTime - lastTime;
-				
+				$('#sadrzaj').text(diff);
 				if(diff > 18000000){
 					
 					$.ajax({
@@ -209,7 +209,7 @@
     <body>  
 		<div data-role="page" id="home">
 			<div data-role="header" data-id="foo1" data-position="fixed" data-theme="b" style="overflow:hidden;">
-				<h1>MojiVicevi</h1>    
+				<h1>MojiVicevi</h1><div id="test"></div>
 				<div data-role="navbar">
 					<ul>
 						<li><a href="#" id="najnoviji">Najnoviji</a></li>
