@@ -56,7 +56,8 @@
 				  lastTime = 0;
 				}else{
 					var lastTimeObj = JSON.parse(localStorage.getItem("updateTime"));
-					var lastTime = lastTimeObj.timestamp;					
+					var lastTime = lastTimeObj.timestamp;
+					$('#test2').text(lastTime);
 				}
 				var diff = currentTime - lastTime;
 				
@@ -64,9 +65,9 @@
 				if(diff > 60){
 					
 					$.ajax({
-						url: 'http://www.mojivicevi.com/vicevi_android.php?tab=1' ,
+						url: 'http://www.mojivicevi.com/vicevi_android_browser.php?tab=1' ,
 						type: "GET",
-						dataType: 'json',
+						dataType: 'jsonp',
 						success: function (result) {						
 							localStorage.setItem("najnovijiDb", JSON.stringify(result));	
 							
@@ -94,9 +95,9 @@
 					}); 
 					
 					$.ajax({
-						url: 'http://www.mojivicevi.com/vicevi_android.php?tab=2' ,
+						url: 'http://www.mojivicevi.com/vicevi_android_browser.php?tab=2' ,
 						type: "GET",
-						dataType: 'json',
+						dataType: 'jsonp',
 						success: function (result) {						
 							localStorage.setItem("viceviDanaDb", JSON.stringify(result));						
 						},
@@ -106,9 +107,9 @@
 					}); 
 					
 					$.ajax({
-						url: 'http://www.mojivicevi.com/vicevi_android.php?tab=3' ,
+						url: 'http://www.mojivicevi.com/vicevi_android_browser.php?tab=3' ,
 						type: "GET",
-						dataType: 'json',
+						dataType: 'jsonp',
 						success: function (result) {						
 							localStorage.setItem("najboljiDb", JSON.stringify(result));
 							var updateTime = {value: "value", timestamp: Math.round(+new Date()/1000)}
