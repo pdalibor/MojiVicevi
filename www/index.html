@@ -50,7 +50,7 @@
 			$(document).on('pageinit', '#home', function(){	
 				$.support.cors = true;
 				$.mobile.allowCrossDomainPages = true;
-				var currentTime = event.timeStamp;
+				var currentTime = Math.round(+new Date()/1000);
 				var lastTime = 0;
 				if (localStorage.getItem("updateTime") === null) {
 				  lastTime = 0;
@@ -112,7 +112,7 @@
 						success: function (result) {						
 							localStorage.setItem("najboljiDb", JSON.stringify(result));
 							var updateTime = {value: "value", timestamp: event.timeStamp}
-							localStorage.setItem("updateTime", JSON.stringify(updateTime));
+							localStorage.setItem("updateTime", JSON.stringify(Math.round(+new Date()/1000)));
 						},
 						error: function (request,error) {					
 							//alert('Network error has occurred please try again!');
