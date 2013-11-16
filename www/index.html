@@ -56,7 +56,8 @@
 				  lastTime = 0;
 				}else{
 					var lastTimeObj = JSON.parse(localStorage.getItem("updateTime"));
-					var lastTime = lastTimeObj.timestamp;
+					var lastTime = parseInt(lastTimeObj.timestamp);
+					$('#test2').text(lastTime.toString());
 				}
 				var diff = currentTime - lastTime;
 				
@@ -210,7 +211,7 @@
     <body>  
 		<div data-role="page" id="home">
 			<div data-role="header" data-id="foo1" data-position="fixed" data-theme="b" style="overflow:hidden;">
-				<h1>MojiVicevi</h1><div id="test"></div>
+				<div id="test2"></div><h1>MojiVicevi</h1><div id="test"></div>
 				<div data-role="navbar">
 					<ul>
 						<li><a href="#" id="najnoviji">Najnoviji</a></li>
