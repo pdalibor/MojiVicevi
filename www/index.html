@@ -58,85 +58,17 @@
 					var lastTimeObj = JSON.parse(localStorage.getItem("updateTime"));
 					var lastTime = lastTimeObj.timestamp;					
 				}
-				var diff = currentTime - lastTime;
+				var diff = currentTime - lastTime;				
 				
-				$('#test').text(diff);
 				if(diff > 18000){
-					
-					$.ajax({
-						url: 'http://www.mojivicevi.com/vicevi_android.php?tab=1' ,
-						type: "GET",
-						dataType: 'json',
-						success: function (result) {						
-							localStorage.setItem("najnovijiDb", JSON.stringify(result));	
-							
-							//Set initial page
-							var najnovijiJson = JSON.parse(localStorage.getItem('najnovijiDb'));
-							var najnovijiAll = '';
-							for (var i = 0, len = najnovijiJson.length; i < len; ++i) {
-								var vic = najnovijiJson[i];
-								var vicTekst = vic.tekst;
-								var vicNaslov = vic.naslov;
-								najnovijiAll = najnovijiAll.concat('<div class=\"entry-content\"><p class=\"naslov\">');
-								najnovijiAll = najnovijiAll.concat(vicNaslov);
-								najnovijiAll = najnovijiAll.concat('</p><p>');
-								najnovijiAll = najnovijiAll.concat(vicTekst);					
-								najnovijiAll = najnovijiAll.concat('</p><div class=\"clr linija\"></div></div>');				
-							}
-							$('#sadrzaj').html(najnovijiAll);
-							$('[data-role="content"]').trigger('create');
-							$(".example-wrapper").iscrollview("refresh");
-							$(".example-wrapper").iscrollview("scrollTo", 0, 0, 0, false);
-						},
-						error: function (request,error) {
-							//alert('Network error has occurred please try again!');
-						}
-					}); 
-					
-					$.ajax({
-						url: 'http://www.mojivicevi.com/vicevi_android.php?tab=2' ,
-						type: "GET",
-						dataType: 'json',
-						success: function (result) {						
-							localStorage.setItem("viceviDanaDb", JSON.stringify(result));						
-						},
-						error: function (request,error) {					
-							//alert('Network error has occurred please try again!');
-						}
-					}); 
-					
-					$.ajax({
-						url: 'http://www.mojivicevi.com/vicevi_android.php?tab=3' ,
-						type: "GET",
-						dataType: 'json',
-						success: function (result) {						
-							localStorage.setItem("najboljiDb", JSON.stringify(result));
-							var updateTime = {value: "value", timestamp: Math.round(+new Date()/1000)}
-							localStorage.setItem("updateTime", JSON.stringify(updateTime));
-						},
-						error: function (request,error) {					
-							//alert('Network error has occurred please try again!');
-						}
-					});
+					refreshAll();					
 				}else{
 					//Set initial page
 					var najnovijiJson = JSON.parse(localStorage.getItem('najnovijiDb'));
-					var najnovijiAll = '';
-					for (var i = 0, len = najnovijiJson.length; i < len; ++i) {
-						var vic = najnovijiJson[i];
-						var vicTekst = vic.tekst;
-						var vicNaslov = vic.naslov;
-						najnovijiAll = najnovijiAll.concat('<div class=\"entry-content\"><p class=\"naslov\">');
-						najnovijiAll = najnovijiAll.concat(vicNaslov);
-						najnovijiAll = najnovijiAll.concat('</p><p>');
-						najnovijiAll = najnovijiAll.concat(vicTekst);					
-						najnovijiAll = najnovijiAll.concat('</p><div class=\"clr linija\"></div></div>');				
-					}
-					$('#sadrzaj').html(najnovijiAll);
+					ispisiViceve(najnovijiJson, 0);
 				}
 				
 			});
-			
 			
 			$(document).on('pagebeforeshow', '#home', function(){ 
 				$('[data-role="content"]').trigger('create');
@@ -146,71 +78,117 @@
  
 			$(document).on('vclick', '#najnoviji', function(){  
 				var najnovijiJson = JSON.parse(localStorage.getItem('najnovijiDb'));
-				var najnovijiAll = '';
-				for (var i = 0, len = najnovijiJson.length; i < len; ++i) {
-					var vic = najnovijiJson[i];
-					var vicTekst = vic.tekst;
-					var vicNaslov = vic.naslov;
-					najnovijiAll = najnovijiAll.concat('<div class=\"entry-content\"><p class=\"naslov\">');
-					najnovijiAll = najnovijiAll.concat(vicNaslov);
-					najnovijiAll = najnovijiAll.concat('</p><p>');
-					najnovijiAll = najnovijiAll.concat(vicTekst);					
-					najnovijiAll = najnovijiAll.concat('</p><div class=\"clr linija\"></div></div>');				
-				}
-				$('#sadrzaj').html(najnovijiAll);
-				$('[data-role="content"]').trigger('create');
-				$(".example-wrapper").iscrollview("refresh");
-				$(".example-wrapper").iscrollview("scrollTo", 0, 0, 0, false);
+				ispisiViceve(najnovijiJson, 0);
 			});
  
 			$(document).on('vclick', '#viceviDana', function(){ 
 				var viceviDanaJson = JSON.parse(localStorage.getItem('viceviDanaDb'));
-				var viceviDanaAll = '';
-				for (var i = 0, len = viceviDanaJson.length; i < len; ++i) {
-					var vicDana = viceviDanaJson[i];
-					var vicTekst = vicDana.tekst;
-					var vicNaslov = vicDana.naslov;
-					var vicDatum = vicDana.datum;
-					viceviDanaAll = viceviDanaAll.concat('<div class=\"entry-content\"><p class=\"naslov\">');
-					viceviDanaAll = viceviDanaAll.concat(vicNaslov);
-					viceviDanaAll = viceviDanaAll.concat('</p><p class=\"autor\" style=\"padding-bottom:0px\">Vic dana za: <strong>');
-					viceviDanaAll = viceviDanaAll.concat(vicDatum);	
-					viceviDanaAll = viceviDanaAll.concat('</strong></p><p>');	
-					viceviDanaAll = viceviDanaAll.concat(vicTekst);					
-					viceviDanaAll = viceviDanaAll.concat('</p><div class=\"clr linija\"></div></div>');				
-				}
-				$('#sadrzaj').html(viceviDanaAll);
-				$('[data-role="content"]').trigger('create');
-				$(".example-wrapper").iscrollview("refresh");
-				$(".example-wrapper").iscrollview("scrollTo", 0, 0, 0, false);
+				ispisiViceve(viceviDanaJson, 1);
 			});
 			
 			$(document).on('vclick', '#najbolji', function(){  
 				var najboljiJson = JSON.parse(localStorage.getItem('najboljiDb'));
-				var najboljiAll = '';
-				for (var i = 0, len = najboljiJson.length; i < len; ++i) {
-					var vic = najboljiJson[i];
-					var vicTekst = vic.tekst;
-					var vicNaslov = vic.naslov;
-					najboljiAll = najboljiAll.concat('<div class=\"entry-content\"><p class=\"naslov\">');
-					najboljiAll = najboljiAll.concat(vicNaslov);
-					najboljiAll = najboljiAll.concat('</p><p>');
-					najboljiAll = najboljiAll.concat(vicTekst);					
-					najboljiAll = najboljiAll.concat('</p><div class=\"clr linija\"></div></div>');				
-				}
-				$('#sadrzaj').html(najboljiAll);
-				$('[data-role="content"]').trigger('create');
-				$(".example-wrapper").iscrollview("refresh");
-				$(".example-wrapper").iscrollview("scrollTo", 0, 0, 0, false);
+				ispisiViceve(najboljiJson, 0);
+			});
+			
+			$(document).on('vclick', '#azuriraj', function(){  
+				refreshAll();	
+				$('#najnoviji').trigger('click');
 			});
  
+			function refreshAll() 
+			{                     
+				$.ajax({
+					url: 'http://www.mojivicevi.com/vicevi_android.php?tab=1' ,
+					type: "GET",
+					dataType: 'json',
+					success: function (result) {						
+						localStorage.setItem("najnovijiDb", JSON.stringify(result));	
+						
+						//Set initial page
+						var najnovijiJson = JSON.parse(localStorage.getItem('najnovijiDb'));
+						ispisiViceve(najnovijiJson, 0);
+					},
+					error: function (request,error) {
+						//alert('Network error has occurred please try again!');
+					}
+				}); 
 				
+				$.ajax({
+					url: 'http://www.mojivicevi.com/vicevi_android.php?tab=2' ,
+					type: "GET",
+					dataType: 'json',
+					success: function (result) {						
+						localStorage.setItem("viceviDanaDb", JSON.stringify(result));						
+					},
+					error: function (request,error) {					
+						//alert('Network error has occurred please try again!');
+					}
+				}); 
+				
+				$.ajax({
+					url: 'http://www.mojivicevi.com/vicevi_android.php?tab=3' ,
+					type: "GET",
+					dataType: 'json',
+					success: function (result) {						
+						localStorage.setItem("najboljiDb", JSON.stringify(result));
+						var updateTime = {value: "value", timestamp: Math.round(+new Date()/1000)}
+						localStorage.setItem("updateTime", JSON.stringify(updateTime));
+					},
+					error: function (request,error) {					
+						//alert('Network error has occurred please try again!');
+					}
+				});
+			} 
+
+			function ispisiViceve(jsonStr, viceviDana) 
+			{
+				if(viceviDana == 1){
+					var viceviDanaAll = '';
+					for (var i = 0, len = jsonStr.length; i < len; ++i) {
+						var vicDana = jsonStr[i];
+						var vicTekst = vicDana.tekst;
+						var vicNaslov = vicDana.naslov;
+						var vicDatum = vicDana.datum;
+						viceviDanaAll = viceviDanaAll.concat('<div class=\"entry-content\"><p class=\"naslov\">');
+						viceviDanaAll = viceviDanaAll.concat(vicNaslov);
+						viceviDanaAll = viceviDanaAll.concat('</p><p class=\"autor\" style=\"padding-bottom:0px\">Vic dana za: <strong>');
+						viceviDanaAll = viceviDanaAll.concat(vicDatum);	
+						viceviDanaAll = viceviDanaAll.concat('</strong></p><p>');	
+						viceviDanaAll = viceviDanaAll.concat(vicTekst);					
+						viceviDanaAll = viceviDanaAll.concat('</p><div class=\"clr linija\"></div></div>');				
+					}
+					$('#sadrzaj').html(viceviDanaAll);
+					$('[data-role="content"]').trigger('create');
+					$(".example-wrapper").iscrollview("refresh");
+					$(".example-wrapper").iscrollview("scrollTo", 0, 0, 0, false);
+				}else{
+					var najnovijiAll = '';
+					for (var i = 0, len = jsonStr.length; i < len; ++i) {
+						var vic = jsonStr[i];
+						var vicTekst = vic.tekst;
+						var vicNaslov = vic.naslov;
+						najnovijiAll = najnovijiAll.concat('<div class=\"entry-content\"><p class=\"naslov\">');
+						najnovijiAll = najnovijiAll.concat(vicNaslov);
+						najnovijiAll = najnovijiAll.concat('</p><p>');
+						najnovijiAll = najnovijiAll.concat(vicTekst);					
+						najnovijiAll = najnovijiAll.concat('</p><div class=\"clr linija\"></div></div>');				
+					}
+					$('#sadrzaj').html(najnovijiAll);
+					$('[data-role="content"]').trigger('create');
+					$(".example-wrapper").iscrollview("refresh");
+					$(".example-wrapper").iscrollview("scrollTo", 0, 0, 0, false);
+				}			  
+			} 
 		</script>
     </head>
     <body>  
 		<div data-role="page" id="home">
 			<div data-role="header" data-id="foo1" data-position="fixed" data-theme="b" style="overflow:hidden;">
-				<div id="test2"></div><h1>MojiVicevi</h1><div id="test"></div>
+				<h1 class="ui-title" role="heading">MojiVicevi</h1>
+				<div class="ui-btn-right" data-role="controlgroup" data-type="horizontal">
+					<a href="#" id="azuriraj" data-role="button" data-inline="true" data-theme="b" data-mini="true" data-icon="refresh" >Ažuriraj</a>
+				</div>
 				<div data-role="navbar">
 					<ul>
 						<li><a href="#" id="najnoviji">Najnoviji</a></li>
