@@ -110,7 +110,9 @@
 						ispisiViceve(najnovijiJson, 0);
 					},
 					error: function (request,error) {
-						//alert('Network error has occurred please try again!');
+						//Set initial page
+						var najnovijiJson = JSON.parse(localStorage.getItem('najnovijiDb'));
+						ispisiViceve(najnovijiJson, 0);
 					}
 				}); 
 				
